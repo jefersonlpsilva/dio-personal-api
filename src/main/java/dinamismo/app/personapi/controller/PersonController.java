@@ -4,6 +4,7 @@ import dinamismo.app.personapi.dto.MessageResponseDTO;
 import dinamismo.app.personapi.dto.request.PersonDTO;
 import dinamismo.app.personapi.service.PersonService;
 import dinamismo.app.personapi.service.exception.PersonNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,14 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/people")
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PersonController {
-
-    @Autowired
-    private PersonService personService;
     
-    public PersonController(PersonService personService) {
-        this.personService = personService;
-    }
+    private PersonService personService;
     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

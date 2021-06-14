@@ -6,6 +6,7 @@ import dinamismo.app.personapi.entity.Person;
 import dinamismo.app.personapi.mapper.PersonMapper;
 import dinamismo.app.personapi.repository.PersonRepository;
 import dinamismo.app.personapi.service.exception.PersonNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,16 +16,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PersonService {
     
     private PersonRepository personRepository;
     
     private final PersonMapper personMapper = PersonMapper.INSTANCE;
-
-    @Autowired
-    public PersonService(PersonRepository personRepository) {
-        this.personRepository = personRepository;
-    }
     
     public MessageResponseDTO createPerson(PersonDTO personDTO){
         Person personToSave  = personMapper.toModel(personDTO);
