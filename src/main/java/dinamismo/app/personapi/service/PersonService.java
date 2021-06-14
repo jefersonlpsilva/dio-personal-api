@@ -1,27 +1,32 @@
 package dinamismo.app.personapi.service;
 
 import dinamismo.app.personapi.dto.MessageResponseDTO;
+import dinamismo.app.personapi.dto.request.PersonDTO;
 import dinamismo.app.personapi.entity.Person;
+import dinamismo.app.personapi.mapper.PersonMapper;
 import dinamismo.app.personapi.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Service
 public class PersonService {
-
+    
     private PersonRepository personRepository;
+    
+    private final PersonMapper personMapper = PersonMapper.INSTANCE;
 
     @Autowired
-    private PersonService(PersonRepository personRepository){
+    public PersonService(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
     
-    public MessageResponseDTO createPerson(Person person){
-        Person savedPerson  = personRepository.save(person);
+    public MessageResponseDTO createPerson(PersonDTO personDTO){
+        Person personToSave  = personMapper.toModel(personDTO);
+        Person savedPerson  = personRepository.save(personToSave);
         return MessageResponseDTO.
                 builder().
-                message("Created person with id"+savedPerson.getId()).
+                message("Created person with ID "+savedPerson.getId()).
                 build();
     }
+    
 }
