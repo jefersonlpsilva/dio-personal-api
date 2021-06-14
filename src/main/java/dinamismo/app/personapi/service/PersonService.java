@@ -5,10 +5,12 @@ import dinamismo.app.personapi.dto.request.PersonDTO;
 import dinamismo.app.personapi.entity.Person;
 import dinamismo.app.personapi.mapper.PersonMapper;
 import dinamismo.app.personapi.repository.PersonRepository;
+import dinamismo.app.personapi.service.exception.PersonNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,6 +39,14 @@ public class PersonService {
         return allPeoplo.stream()
                 .map(personMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+
+    public PersonDTO findById(Long id) throws PersonNotFoundException {
+        Person person = personRepository
+                .findById(id)
+                .orElseThrow(() -> new PersonNotFoundException(id));         
+        return personMapper.toDTO(person); 
     }
     
 }
