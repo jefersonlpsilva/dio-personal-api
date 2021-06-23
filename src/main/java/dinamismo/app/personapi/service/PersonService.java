@@ -5,12 +5,13 @@ import dinamismo.app.personapi.dto.request.PersonDTO;
 import dinamismo.app.personapi.entity.Person;
 import dinamismo.app.personapi.mapper.PersonMapper;
 import dinamismo.app.personapi.repository.PersonRepository;
+import dinamismo.app.personapi.service.exception.PersonCpfNotFoundException;
+import dinamismo.app.personapi.service.exception.PersonAlreadyRegisteredException;
 import dinamismo.app.personapi.service.exception.PersonNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.PersistenceException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,7 +24,8 @@ public class PersonService {
     
     private final PersonMapper personMapper = PersonMapper.INSTANCE;
     
-    public MessageResponseDTO createPerson(PersonDTO personDTO){
+    public MessageResponseDTO createPerson(PersonDTO personDTO) throws PersonAlreadyRegisteredException {
+        verifyIfIsAlreadyRegistered(personDTO.getCpf());
         Person personToSave  = personMapper.toModel(personDTO);
         Person savedPerson  = personRepository.save(personToSave);
         return createMessageResponse(savedPerson.getId(), "Created person with ID ");
@@ -39,6 +41,12 @@ public class PersonService {
     public PersonDTO findById(Long id) throws PersonNotFoundException {
         Person person = verifyIfExists(id);         
         return personMapper.toDTO(person); 
+    }
+
+    public PersonDTO findByCfp(String cpf) throws PersonCpfNotFoundException {
+        Person foundPerson = personRepository.findByCpf(cpf)
+                .orElseThrow(() -> new PersonCpfNotFoundException(cpf));
+        return personMapper.toDTO(foundPerson);
     }
 
     public void deleteById(Long id) throws PersonNotFoundException {
@@ -59,6 +67,13 @@ public class PersonService {
         return personRepository
                 .findById(id)
                 .orElseThrow(() -> new PersonNotFoundException(id));
+    }
+
+    private void verifyIfIsAlreadyRegistered(String cpf) throws PersonAlreadyRegisteredException {
+        Optional<Person> optSavedBeer = personRepository.findByCpf(cpf);
+        if (optSavedBeer.isPresent()) {
+            throw new PersonAlreadyRegisteredException(cpf);
+        }
     }
     
     private MessageResponseDTO createMessageResponse(Long id, String message) {

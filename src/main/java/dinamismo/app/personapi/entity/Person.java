@@ -1,9 +1,7 @@
 package dinamismo.app.personapi.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import dinamismo.app.personapi.enums.Gender;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -19,6 +17,9 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String email;
     
     @Column(nullable = false)
     private String firstName;
@@ -29,8 +30,24 @@ public class Person {
     @Column(nullable = false, unique = true)
     private String cpf;
     
-    private LocalDate birthDate;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
+    private LocalDate birthDate;
+    
+    private String zipCode;
+    
+    private String state;
+
+    private String city;
+    
+    private String address;
+    
     @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    private List<Phone> phones;
+    @Singular private List<Phone> phones;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @Singular
+    private List<JobInformation> jobInformations;
+    
 }
