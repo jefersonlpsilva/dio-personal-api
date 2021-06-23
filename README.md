@@ -1,4 +1,4 @@
-<h2> Este repositorio tem como objetivo fazer uma das entregas do curso
+<h2> Este repositorio tem como objetivo fazer uma das entregas do curso</h2>
 ```
 https://digitalinnovation.one/bootcamps/gft-start-2-java
 ```
@@ -27,9 +27,9 @@ http://localhost:8080/api/v2/people
 ```
 Execução no heroku na conta dev:
 ```
-http://localhost:8080/api/v2/people
+https://jlps-person-api.herokuapp.com/api/v2/people
 ```
-Processos adicionados por mim:
+Processos adicionados:
 
 SonarQube para controlar a qualidade do codigo:
 ```
@@ -39,7 +39,7 @@ mvn sonar:sonar \
 -Dsonar.login=20d68a5f70132fbbbac1a194b91157fc6b6dbef2
 ```
 
-Swagger para para controlar a documentação web:
+Swagger documentar api:
 
 Pendências:
 Necessário adicionar Spring-security
@@ -76,4 +76,4 @@ Abaixo, seguem links bem bacanas, sobre tópicos mencionados durante a aula:
 Observações particulares:
  Não alterar a ordem do Lombok e Map Struct no pow.xml.
  No pow.xml foi adicionado número de verões para algumas dependências para resolver problemas de imcompatibilidades.
- A linguagem de codifição é inglês.
+ A lingua de codifição é inglês.
